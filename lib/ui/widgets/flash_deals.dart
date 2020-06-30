@@ -74,9 +74,9 @@ class FlashDealsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final products = Provider.of<Products>(context, listen: false).items;
+    final products = Provider.of<Products>(context).items;
     return Container(
-      child: Stack(
+      child: products.length > 0 ? Stack(
         children: <Widget>[
           Container(
             width: double.infinity,
@@ -100,7 +100,7 @@ class FlashDealsItem extends StatelessWidget {
             ),
           ),
         ],
-      ),
+      ) : Center(child: CircularProgressIndicator(),),
     );
   }
 }

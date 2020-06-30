@@ -1,3 +1,7 @@
+import 'package:aliexpress/helpers/extentions.dart';
+import 'package:aliexpress/ui/screens/category_screen.dart';
+import 'package:aliexpress/ui/screens/login_screen.dart';
+import 'package:aliexpress/ui/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
 
 class HotMenu extends StatelessWidget {
@@ -62,36 +66,130 @@ class _HotMenuItem extends StatelessWidget {
 
   _HotMenuItem(this.id, this.title, this.icon, this.color);
 
+
   Widget get _item {
-    return Column(
-      children: <Widget>[
-        CircleAvatar(
-          child: Icon(
-            icon,
+    return InkWell(
+//      onTap:() {
+//        if (id == 0)  _goCategoryScreen(context);
+//        // ignore: unnecessary_statements
+//        else null;
+//      },
+      child: Column(
+        children: <Widget>[
+          CircleAvatar(
+            child: Icon(
+              icon,
+            ),
+            backgroundColor: color,
           ),
-          backgroundColor: color,
-        ),
-        SizedBox(
-          height: 6,
-        ),
-        Text(
-          title,
-          style: TextStyle(fontSize: (id != 1) ? 12 : 10),
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.clip,
-          maxLines: 2,
-        )
-      ],
+          SizedBox(
+            height: 6,
+          ),
+          Text(
+            title,
+            style: TextStyle(fontSize: (id != 1) ? 12 : 10),
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.clip,
+            maxLines: 2,
+          )
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return (id != 1)
-        ? _item
-        : Padding(
-            padding: const EdgeInsets.only(top: 4.0),
-            child: _item,
-          );
+    return Padding(
+      padding: EdgeInsets.only(top: (id == 1) ? 4.0 : 0.0),
+      child: InkWell(
+        onTap:() {
+          if (id == 0)  OpenNewScreenWithName(CategoryScreen.routeName).openScreen(context);
+          else if(id == 1) OpenNewScreenWithName(LoginScreen.routeName).openScreen(context);
+          else if(id == 2) OpenNewScreenWithName(RegistrationScreen.routeName).openScreen(context);
+          // ignore: unnecessary_statements
+          else null;
+        },
+        child: Column(
+          children: <Widget>[
+            CircleAvatar(
+              child: Icon(
+                icon,
+              ),
+              backgroundColor: color,
+            ),
+            SizedBox(
+              height: 6,
+            ),
+            Text(
+              title,
+              style: TextStyle(fontSize: (id != 1) ? 12 : 10),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.clip,
+              maxLines: 2,
+            )
+          ],
+        ),
+      ),
+    );
+
+
+//      (id != 1)
+//        ? InkWell(
+//      onTap:() {
+//        if (id == 0)  OpenNewScreen(CategoryScreen.routeName).openScreen(context);
+//        // ignore: unnecessary_statements
+//        else null;
+//      },
+//      child: Column(
+//        children: <Widget>[
+//          CircleAvatar(
+//            child: Icon(
+//              icon,
+//            ),
+//            backgroundColor: color,
+//          ),
+//          SizedBox(
+//            height: 6,
+//          ),
+//          Text(
+//            title,
+//            style: TextStyle(fontSize: (id != 1) ? 12 : 10),
+//            textAlign: TextAlign.center,
+//            overflow: TextOverflow.clip,
+//            maxLines: 2,
+//          )
+//        ],
+//      ),
+//    )
+//        : Padding(
+//            padding: const EdgeInsets.only(top: 4.0),
+//            child: InkWell(
+//              onTap:() {
+//                if (id == 0)  OpenNewScreen(CategoryScreen.routeName).openScreen(context);
+//                // ignore: unnecessary_statements
+//                else null;
+//              },
+//              child: Column(
+//                children: <Widget>[
+//                  CircleAvatar(
+//                    child: Icon(
+//                      icon,
+//                    ),
+//                    backgroundColor: color,
+//                  ),
+//                  SizedBox(
+//                    height: 6,
+//                  ),
+//                  Text(
+//                    title,
+//                    style: TextStyle(fontSize: (id != 1) ? 12 : 10),
+//                    textAlign: TextAlign.center,
+//                    overflow: TextOverflow.clip,
+//                    maxLines: 2,
+//                  )
+//                ],
+//              ),
+//            ),
+//          );
   }
 }

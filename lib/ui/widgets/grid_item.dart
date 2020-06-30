@@ -1,3 +1,4 @@
+import 'package:aliexpress/helpers/extentions.dart';
 import 'package:aliexpress/providers/product.dart';
 import 'package:aliexpress/ui/screens/product_detail_screen.dart';
 import 'package:aliexpress/ui/widgets/cached_image.dart';
@@ -7,15 +8,38 @@ class GridItem extends StatelessWidget {
   final Product product;
 
   GridItem(this.product);
-
-  void _openDetailScreen(BuildContext context, String productId){
-    Navigator.pushNamed(context, ProductDetailScreen.routeName, arguments: productId);
-  }
+//
+//  void _openDetailScreen(BuildContext context, int productId) {
+//    Navigator.push(
+//        context,
+//        PageRouteBuilder(
+//          pageBuilder: (
+//            BuildContext context,
+//            Animation<double> animation,
+//            Animation<double> secondaryAnimation,
+//          ) => ProductDetailScreen(),
+//          settings: RouteSettings(arguments: productId),
+//          transitionDuration: Duration(milliseconds: 1000),
+//          transitionsBuilder: (
+//            BuildContext context,
+//            Animation<double> animation,
+//            Animation<double> secondaryAnimation,
+//            Widget child,
+//          ) => ScaleTransition(
+//            scale: CurvedAnimation(
+//            parent: animation,
+//            curve: Curves.slowMiddle,
+//          ),
+//            child: child,
+//          ),
+//        ));
+//  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap:() => _openDetailScreen(context, product.id),
+      onTap: () => OpenNewScreenWithWidget(ProductDetailScreen()).openScreenWithScaleTransition(context, product.id),
+//      onTap: () => _openDetailScreen(context, product.id),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(4)),
         child: Container(
@@ -44,17 +68,19 @@ class GridItem extends StatelessWidget {
                     style: TextStyle(fontSize: 12.0),
                   ),
                 ),
-                (product.freeReturn) ? Padding(
-                  padding: const EdgeInsets.only(
-                      left: 4.0, right: 4.0, top: 2.0, bottom: 2.0),
-                  child: Text(
-                    " Free Return ",
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 10,
-                        backgroundColor: Colors.grey[100]),
-                  ),
-                ) : Padding(padding: EdgeInsets.all(0.0)),
+                (product.freeReturn)
+                    ? Padding(
+                        padding: const EdgeInsets.only(
+                            left: 4.0, right: 4.0, top: 2.0, bottom: 2.0),
+                        child: Text(
+                          " Free Return ",
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 10,
+                              backgroundColor: Colors.grey[100]),
+                        ),
+                      )
+                    : Padding(padding: EdgeInsets.all(0.0)),
                 Padding(
                   padding: const EdgeInsets.only(
                       left: 4.0, right: 4.0, top: 2.0, bottom: 2.0),
@@ -66,7 +92,8 @@ class GridItem extends StatelessWidget {
                               color: Colors.white,
                               backgroundColor: Colors.red[400])),
                       TextSpan(
-                          text: " US \$${product.newPrice.substring(0, 4)}",
+                          text:
+                              " US \$${product.newPriceBegin} - ${product.newPriceEnd}",
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold))
                     ]),
@@ -103,7 +130,8 @@ class GridItem extends StatelessWidget {
                               ]))
                             : Text(
                                 "${product.ordersCount} sold",
-                                style: TextStyle(fontSize: 12, color: Colors.grey),
+                                style:
+                                    TextStyle(fontSize: 12, color: Colors.grey),
                                 maxLines: 1,
                               ),
                         Flexible(

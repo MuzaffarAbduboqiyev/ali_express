@@ -1,8 +1,11 @@
+import 'package:aliexpress/providers/products.dart';
 import 'package:aliexpress/ui/widgets/cached_image.dart';
 import 'package:aliexpress/ui/widgets/featured_categories.dart';
 import 'package:aliexpress/ui/widgets/flash_deals.dart';
 import 'package:aliexpress/ui/widgets/hot_menu.dart';
+import 'package:aliexpress/ui/widgets/recommendation_products.dart';
 import 'package:aliexpress/ui/widgets/search_view.dart';
+import 'package:provider/provider.dart';
 import './product_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +17,12 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   AnimationController _controller;
   Animation _animationTween;
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies(){
     _controller =
         AnimationController(vsync: this, duration: Duration(seconds: 0));
     _animationTween = ColorTween(begin: Colors.transparent, end: Colors.red)
@@ -28,6 +30,10 @@ class _HomeScreenState extends State<HomeScreen>
     super.didChangeDependencies();
   }
 
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   void dispose() {
     _controller.dispose();
@@ -72,7 +78,7 @@ class MainFrame extends StatelessWidget {
         FunAtHome(),
         FlashDeals(),
         FeaturedCategories(),
-        SellerRecommendations("0", isHome: true,)
+        SellerRecommendations(Provider.of<Products>(context, listen: false).items.take(10).toList(), isSellerRecommendation: true,)
       ],
     );
   }
@@ -194,16 +200,16 @@ class FunAtHome extends StatelessWidget {
                         Expanded(
                             child: FunAtHomeItems(
                                 "Indoor Essentials",
-                                "https://i.picsum.photos/id/120/200/300.jpg",
-                                "https://i.picsum.photos/id/121/200/300.jpg")),
+                                "https://picsum.photos/id/120/200/300.jpg",
+                                "https://picsum.photos/id/121/200/300.jpg")),
                         SizedBox(
                           width: 6,
                         ),
                         Expanded(
                             child: FunAtHomeItems(
                                 "Indoor Essentials",
-                                "https://i.picsum.photos/id/122/200/300.jpg",
-                                "https://i.picsum.photos/id/123/200/300.jpg")),
+                                "https://picsum.photos/id/122/200/300.jpg",
+                                "https://picsum.photos/id/123/200/300.jpg")),
                       ],
                     ),
                   ),

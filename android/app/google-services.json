@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "893601796296",
+    "firebase_url": "https://flutterexpressshop.firebaseio.com",
+    "project_id": "flutterexpressshop",
+    "storage_bucket": "flutterexpressshop.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:893601796296:android:2d69a1408d9dbca7c955fd",
+        "android_client_info": {
+          "package_name": "com.muzaffaribntursunboy.aliexpress"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "893601796296-139k6d5775ocbl3jei6042f3jm1q9nom.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaJyolQ7OBud5-V6lN0D_0lNvKnxFrTf4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "893601796296-139k6d5775ocbl3jei6042f3jm1q9nom.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "893601796296-ukf1bk05l08qesqp7mag4naujt8hjpdd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.muzaffaribntursunboy.aliexpress"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

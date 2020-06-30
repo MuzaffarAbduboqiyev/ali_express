@@ -1,11 +1,15 @@
+import 'package:aliexpress/helpers/extentions.dart';
+import 'package:aliexpress/providers/cart.dart';
+import 'package:aliexpress/ui/screens/add_to_cart_screen.dart';
+import 'package:aliexpress/ui/screens/cart_screen.dart';
+import 'package:aliexpress/ui/widgets/badge.dart';
 import 'package:aliexpress/ui/widgets/cached_image.dart';
-import 'package:aliexpress/ui/widgets/grid_item.dart';
+import 'package:aliexpress/ui/widgets/recommendation_products.dart';
+import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
-
 import 'package:aliexpress/providers/products.dart';
 import 'package:aliexpress/providers/product.dart';
 
@@ -14,23 +18,74 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String productId =
-        ModalRoute.of(context).settings.arguments as String;
+    final int productId = ModalRoute.of(context).settings.arguments as int;
     final product =
         Provider.of<Products>(context, listen: false).getProductById(productId);
     return Scaffold(
-      body: NestedScrollView(
-          headerSliverBuilder: (ctx, isScrolled) {
-            return <Widget>[
-              ItemDetailAppBar(product),
-            ];
-          },
-          body: CustomScrollView(slivers: [
-            _ItemTitleWithPrice(product),
-            _ItemDescription(product),
-            SellerRecommendations(productId),
-          ])),
-    );
+        body: NestedScrollView(
+            headerSliverBuilder: (ctx, isScrolled) {
+              return <Widget>[
+                ItemDetailAppBar(product),
+              ];
+            },
+            body: CustomScrollView(slivers: [
+              _ItemTitleWithPrice(product),
+              _ItemDescription(product),
+              SellerRecommendations(
+                  Provider.of<Products>(context, listen: false)
+                      .getProductsByProduct(product),
+                  isSellerRecommendation: true),
+            ])),
+        bottomNavigationBar: BottomAppBar(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: BouncingWidget(
+                  onPressed: () {
+                    OpenNewScreenWithName(AddToCartScreen.routeName)
+                        .openScreenWithInt(context, productId);
+                  },
+                  duration: Duration(milliseconds: 100),
+                  scaleFactor: -1.0,
+                  child: Container(
+                      width: double.infinity,
+                      height: kBottomNavigationBarHeight,
+                      decoration: BoxDecoration(
+                        color: Colors.orange[100],
+                      ),
+                      child: Center(
+                        child: Text(
+                          'ADD TO CART',
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.bold),
+                        ),
+                      )),
+                ),
+              ),
+              Expanded(
+                child: BouncingWidget(
+                  onPressed: () {},
+                  duration: Duration(milliseconds: 100),
+                  scaleFactor: -1.0,
+                  child: Container(
+                      width: double.infinity,
+                      height: kBottomNavigationBarHeight,
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                      ),
+                      child: Center(
+                        child: Text(
+                          'BUY NOW',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      )),
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 }
 
@@ -47,10 +102,16 @@ class ItemDetailAppBar extends StatelessWidget {
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       actions: [
-        IconButton(
+        Consumer<Cart>(
+          builder: (_, cart, ch) =>
+              Badge(child: ch, value: cart.itemCount.toString()),
+          child: IconButton(
             icon: Icon(Icons.shopping_cart, color: Colors.white),
             tooltip: "Opening shopping cart",
-            onPressed: () {}),
+            onPressed: () =>
+                OpenNewScreenWithName(CartScreen.routeName).openScreen(context),
+          ),
+        ),
         IconButton(
             icon: Icon(Icons.share, color: Colors.white),
             tooltip: "Share product link",
@@ -146,7 +207,8 @@ class _ItemTitleWithPrice extends StatelessWidget {
                 title: RichText(
                     text: TextSpan(children: [
                   TextSpan(
-                      text: "US \$${_product.newPrice}",
+                      text:
+                          "US \$${_product.newPriceBegin} - ${_product.newPriceEnd}",
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -271,7 +333,8 @@ class _ItemDescription extends StatelessWidget {
                 : SizedBox(
                     height: 0,
                   ),
-            _DescriptionImages(_product.descriptionImages),
+            _DescriptionImages(
+                _product.productItems.map((e) => e.imageUrl).toList()),
           ],
         ),
       ),
@@ -294,52 +357,5 @@ class _DescriptionImages extends StatelessWidget {
               height: 250,
               child: CachedImage(imgUrls[index]),
             ));
-  }
-}
-
-// ignore: must_be_immutable
-class SellerRecommendations extends StatelessWidget {
-  final String productId;
-  bool isHome;
-
-
-  SellerRecommendations(this.productId, {this.isHome = false});
-
-  @override
-  Widget build(BuildContext context) {
-    final products = Provider.of<Products>(context, listen: false).items;
-    if(isHome){
-        products.removeWhere((element) => element.id == productId);
-    }
-    return SliverToBoxAdapter(
-      child: Container(
-//          height: 250,
-          padding: EdgeInsets.all(8.0),
-          decoration: BoxDecoration(color: Colors.grey[300]),
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                "Seller Recommendations",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
-              ),
-              SingleChildScrollView(
-                child: GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, childAspectRatio: 0.7),
-                  itemBuilder: (ctx, index) => GridItem(products[index]),
-                  itemCount: products.length,
-                ),
-              )
-            ],
-          )),
-    );
   }
 }

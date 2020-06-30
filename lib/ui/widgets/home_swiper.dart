@@ -12,10 +12,12 @@ class HomeSwiper extends StatefulWidget {
   _HomeSwiperState createState() => _HomeSwiperState();
 }
 
+
+
 class _HomeSwiperState extends State<HomeSwiper> {
   @override
   Widget build(BuildContext context) {
-    final products = Provider.of<Products>(context, listen: false).items;
+    var products = Provider.of<Products>(context, listen: false).items.sublist(0, 6);
     return SliverToBoxAdapter(
       child: Stack(
         children: [
@@ -41,7 +43,7 @@ class _HomeSwiperState extends State<HomeSwiper> {
                 width: double.infinity,
                 decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8)),),
                 padding: EdgeInsets.all(8),
-                child: ClipRRect(
+                child: products.length > 0 ? ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(8)),
                   child: Swiper(
                     itemCount: 6,
@@ -59,7 +61,7 @@ class _HomeSwiperState extends State<HomeSwiper> {
                       setState(() {});
                     },
                   ),
-                ),
+                ) : Center(child: CircularProgressIndicator(),),
               ),
             ],
           )

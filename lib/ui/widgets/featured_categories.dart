@@ -9,23 +9,23 @@ class FeaturedCategories extends StatelessWidget {
   List<Map<String, String>> _items = [
     {
       'title': 'Women\'s Fashion',
-      'imgUrl': 'https://i.picsum.photos/id/150/200/300.jpg'
+      'imgUrl': 'https://picsum.photos/id/9/200/300.jpg'
     },
-    {'title': 'Hair', 'imgUrl': 'https://i.picsum.photos/id/151/200/300.jpg'},
-    {'title': 'Toys', 'imgUrl': 'https://i.picsum.photos/id/152/200/300.jpg'},
-    {'title': 'Shoes', 'imgUrl': 'https://i.picsum.photos/id/153/200/300.jpg'},
-    {'title': 'Kids', 'imgUrl': 'https://i.picsum.photos/id/154/200/300.jpg'},
+    {'title': 'Hair', 'imgUrl': 'https://picsum.photos/id/8/200/300.jpg'},
+    {'title': 'Toys', 'imgUrl': 'https://picsum.photos/id/7/200/300.jpg'},
+    {'title': 'Shoes', 'imgUrl': 'https://picsum.photos/id/6/200/300.jpg'},
+    {'title': 'Kids', 'imgUrl': 'https://picsum.photos/id/54/200/300.jpg'},
     {
       'title': 'Men\'s Fashion',
-      'imgUrl': 'https://i.picsum.photos/id/155/200/300.jpg'
+      'imgUrl': 'https://picsum.photos/id/155/200/300.jpg'
     },
     {
       'title': 'Intimates',
-      'imgUrl': 'https://i.picsum.photos/id/156/200/300.jpg'
+      'imgUrl': 'https://picsum.photos/id/156/200/300.jpg'
     },
     {
       'title': 'Fun & Games',
-      'imgUrl': 'https://i.picsum.photos/id/157/200/300.jpg'
+      'imgUrl': 'https://picsum.photos/id/157/200/300.jpg'
     },
   ];
 
